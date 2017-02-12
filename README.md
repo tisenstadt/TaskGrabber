@@ -12,11 +12,11 @@ Running the Utility:
 
 Prerequisites:
 
-Ruby (uses built-in net/http, JSON, and unit test libraries - no external dependencies)
-Asana Personal Access Token
-GitHub Personal Access Token
-GitHub username of destination repository
-GitHub destination repository name
+1. Ruby (uses built-in net/http, JSON, and unit test libraries - no external dependencies)
+2. Asana Personal Access Token
+3. GitHub Personal Access Token
+4. GitHub username of destination repository
+5. GitHub destination repository name
 
 TaskGrabber makes use of a light token-based authentication system to connect to the Asana and GitHub APIs. You will need to get encrypted tokens to get the utility to run, as the application will prompt you to enter these tokens in the console window. Be sure to store your tokens in a safe place, as they cannot be retrieved again!
 

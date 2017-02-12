@@ -8,7 +8,7 @@ class Asana
   attr_accessor :tasks, :formatted_tasks, :workspace_ids, :project_ids
   attr_reader :json, :task_processor, :base_url
 
-	def initialize(args)
+  def initialize(args)
     @json = args[:json]
     @task_processor = args[:task_processor]
     @tasks = Array.new  
@@ -16,7 +16,7 @@ class Asana
     @workspace_ids = Array.new
     @project_ids = Array.new
     @base_url = "https://app.asana.com/api/1.0/"
-	end
+  end
 
   def query_workspaces
     output = get_query_results("workspaces") #Query returns workspaces. Program exits if authentication is invalid.

@@ -1,7 +1,7 @@
 class GitHub
   attr_accessor :base_url, :post_url, :patch_url, :patch_info, :post_uri, :post_http
   
-	def initialize
+  def initialize
     @base_url = "https://api.github.com/repos/"
     @post_url = String.new
     @patch_url = String.new

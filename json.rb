@@ -1,5 +1,5 @@
 class JSONParser
-	def initialize
+  def initialize
   end
 
   def parse_asana(url_response)
