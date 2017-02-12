@@ -12,7 +12,7 @@ class GitHub
   def upload_tasks(tasks)
     set_destination_repository
     tasks.each do |task|
-      response = process_post(self.post_uri, self.post_http, {"body" => task["body"], "title" => task["title"]})
+      response = process_post(self.post_uri, self.post_http, {"body" => task["body"], "title" => task["title"], "labels" => task["labels"]})
       check_for_closed_state(task, response)
     end
     puts "Task upload to GitHub Issues has completed."

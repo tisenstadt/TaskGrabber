@@ -9,10 +9,10 @@ class TokenCollector
   end
 
   def run_program
-    puts "Welcome to Asana Converter, an application to convert Asana tasks to GitHub Issues"
+    puts "Welcome to TaskGrabber, an application to convert Asana tasks to GitHub Issues"
     get_asana_token
     get_github_token
-    asana.query_tasks
+    asana.run_queries
   end
 
   def get_asana_token

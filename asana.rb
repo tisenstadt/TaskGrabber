@@ -5,52 +5,63 @@ require './json.rb'
 require './task_processor.rb'
 
 class Asana
-  attr_accessor :messages, :queries, :workspace_id, :project_id, :tasks, :formatted_tasks
+  attr_accessor :tasks, :formatted_tasks, :workspace_ids, :project_ids
   attr_reader :json, :task_processor, :base_url
 
 	def initialize(args)
     @json = args[:json]
     @task_processor = args[:task_processor]
-    @workspace_id = nil
-    @project_id = nil
     @tasks = Array.new  
     @formatted_tasks = Array.new
-    @queries =  ["workspaces"]
-    @messages = {:workspaces => "Here are your Asana workspaces. Please enter the workspace id from which you want to migrate tasks.",
-                 :projects => "Here are your Asana projects. Please enter the project id from which you want to migrate tasks.",
-                 :tasks => "Here are the tasks that will be migrated to GitHub as Issues."}
+    @workspace_ids = Array.new
+    @project_ids = Array.new
     @base_url = "https://app.asana.com/api/1.0/"
 	end
 
-  def query_tasks
-    count = 0
-    queries.each do |query|
-      output = get_query_results(query)
-      add_query(count)
-      count += 1
-      extract_task_ids(output) if count == 3
+  def query_workspaces
+    output = get_query_results("workspaces") #Giant hash of workspaces
+    output.each do |workspace|
+      workspace_ids << workspace["id"]
     end
+  end
+
+  def query_projects
+    workspace_ids.each do |workspace| #Projects, not workspaces, returned by query
+      output = get_query_results("workspaces/#{workspace}/projects")
+      output.each do |project|
+        project_ids << project["id"]
+      end
+    end
+  end
+
+  def query_tasks
+    project_ids.each do |project| #Retrieve tasks associated with project.
+      output = get_query_results("projects/#{project}/tasks")
+      output.each do |task|
+         tasks << task["id"]
+      end
+    end
+  end
+
+  def collect_tasks_for_export
+    tasks.each do |task_id|
+      task_data = get_query_results("tasks/#{task_id}") 
+      formatted_tasks << task_data
+    end
+  end
+
+  def run_queries #Master method
+    query_workspaces
+    query_projects
+    query_tasks
     collect_tasks_for_export
+    p formatted_tasks
     task_processor.process_tasks(self)
   end
 
-  def add_query(count)
-    if count == 0
-      puts messages[:workspaces]
-      self.workspace_id = gets.chomp
-      self.queries[1] = "workspaces/#{workspace_id}/projects"
-    elsif count == 1
-      puts messages[:projects]
-      self.project_id = gets.chomp
-      self.queries[2] = "projects/#{project_id}/tasks"
-    elsif count == 2
-      puts messages[:tasks]
-    end
-  end
-
-  def get_query_results(query, printout = true) 
+  def get_query_results(query) 
     response = query_asana(query)
-    data_output = send_to_json(response, printout)
+    data_output = send_to_json(response)
   end
 
   def query_asana(query)
@@ -76,20 +87,7 @@ class Asana
     response = http.request(request)
   end
 
-  def send_to_json(response, printout)
-    json.parse_asana(response, printout)
-  end
-
-  def extract_task_ids(task_data)
-    task_data.each do |task|
-      self.tasks << task["id"]
-    end
-  end
-
-  def collect_tasks_for_export
-    tasks.each do |task_id|
-      task_data = get_query_results("tasks/#{task_id}", false) 
-      formatted_tasks << task_data
-    end
+  def send_to_json(response)
+    json.parse_asana(response)
   end
 end

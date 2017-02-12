@@ -1,8 +1,8 @@
-Welcome to TaskGrabber! This is a utility in Ruby to convert Asana tasks to GitHub Issues. Functionality exists to import Issues to any public or private GitHub repository, and Issues will be marked as "open" or "closed" depending on their status at time of import.
+Welcome to TaskGrabber! This is a utility in Ruby to convert Asana tasks to GitHub issues. Functionality exists to import issues to any public or private GitHub repository, and issues will be marked as "open" or "closed" depending on their status at time of import.
 
-Running the Utility
+Running the Utility:
 
-The utility was built in Ruby version 2.2.4. While an installaton of Ruby is required to get the utility to run, it relies on no external dependencies. The utility makes use of Ruby's built-in net/http and JSON libraries, in addition to its Unit Testing suite. After downloading the files in the repository to your local drive, navigate to the location in which the files have been downloaded and run "launch.rb" to start the application. Run "tests.rb" to access the test suite.
+The utility was built in Ruby version 2.2.4. While an installaton of Ruby is required to get the utility to run, it relies on no external dependencies. The utility makes use of Ruby's built-in net/http and JSON libraries, in addition to its unit testing suite. After downloading the files in the repository to your local drive, navigate to the location in which the files have been downloaded and run "launch.rb" to start the application. Run "tests.rb" to access the test suite.
 
 Prerequisites:
 
