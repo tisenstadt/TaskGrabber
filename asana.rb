@@ -36,18 +36,17 @@ class Asana
 
   def add_query(count)
     if count == 0
-        puts messages[:workspaces]
-        self.workspace_id = gets.chomp
-        self.queries[1] = "workspaces/#{workspace_id}/projects"
-      elsif count == 1
-        puts messages[:projects]
-        self.project_id = gets.chomp
-        self.queries[2] = "projects/#{project_id}/tasks"
-      elsif count == 2
-        puts messages[:tasks]
+      puts messages[:workspaces]
+      self.workspace_id = gets.chomp
+      self.queries[1] = "workspaces/#{workspace_id}/projects"
+    elsif count == 1
+      puts messages[:projects]
+      self.project_id = gets.chomp
+      self.queries[2] = "projects/#{project_id}/tasks"
+    elsif count == 2
+      puts messages[:tasks]
     end
   end
-    
 
   def get_query_results(query, printout = true) 
     response = query_asana(query)
