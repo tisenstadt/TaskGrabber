@@ -41,7 +41,9 @@ This utility was designed to connect to the Asana and GitHub APIs. A series of G
 
 Features to Add
 
-The utility's querying capacity can be expanded. In addition to querying for tasks tied to a specific project, the Asana API can also query for tasks associated with a given assignee and workspace. Additionally, authentication may be expanded into the more robust OAuth authentication system instead of the personal-access token approach used in the current utility.  
+The project currently assumes that the migration will complete without any interruption. There could be a scenario where the migration stops before it can complete: for instance, the utility may be shut down by accident after a portion of the data has already migrated. If the user runs the program again, all tasks will be migrated, meaning that duplicate tasks will arise in the destination repository. There are a number of ways to approach this problem. The naive approach is to add a tag with the Asana id to the body of each migrated task. We could then query GitHub for all tasks, and check each Asana task id against the task before it is posted. If a match occurs, the task will not be posted. The downside of this approach is that it is extremely resource-intensive and not ideal for large sets of data: we don't want to query GitHub more than we need to. I would love to discuss any feedback or thoughts on this issue!
+
+The utility's querying capacity can be expanded. In addition to querying for tasks tied to a specific project, the Asana API can also query for tasks associated with a given assignee and workspace. A full interface for the user may be created at a later date that allows the user to select specific tasks and projects to migrate, as opposed to simply migrating all of them. 
 
 Thank you for using TaskGrabber!  
 
