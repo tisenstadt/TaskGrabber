@@ -2,11 +2,12 @@ require './github.rb'
 
 class TaskProcessor
 	attr_reader :github
+  
   def initialize(args)
     @github = args[:github]
   end
 
-  def process_tasks(asana)
+  def process_tasks(asana) #Asana Tasks need to be reformatted to be accepted by the GitHub API.
     tasks = asana.formatted_tasks
     tasks.each do |task|
       reformat_task_keys(task)

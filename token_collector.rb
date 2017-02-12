@@ -4,6 +4,7 @@ $github_personal_token = String.new
 
 class TokenCollector
   attr_reader :asana
+  
   def initialize(args)
     @asana = args[:asana]
   end

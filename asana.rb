@@ -19,15 +19,19 @@ class Asana
 	end
 
   def query_workspaces
-    output = get_query_results("workspaces") #Giant hash of workspaces
+    output = get_query_results("workspaces") #Query returns workspaces. Program exits if authentication is invalid.
+    if output.nil?
+      puts "Authentication Error - Please Verify Asana Access Token"
+      exit(1)
+    end
     output.each do |workspace|
       workspace_ids << workspace["id"]
     end
   end
 
   def query_projects
-    workspace_ids.each do |workspace| #Projects, not workspaces, returned by query
-      output = get_query_results("workspaces/#{workspace}/projects")
+    workspace_ids.each do |workspace| 
+      output = get_query_results("workspaces/#{workspace}/projects") #Query returns projects associated with workspace.
       output.each do |project|
         project_ids << project["id"]
       end
@@ -35,7 +39,7 @@ class Asana
   end
 
   def query_tasks
-    project_ids.each do |project| #Retrieve tasks associated with project.
+    project_ids.each do |project| #Query returns tasks associated with projects.
       output = get_query_results("projects/#{project}/tasks")
       output.each do |task|
          tasks << task["id"]
@@ -50,24 +54,23 @@ class Asana
     end
   end
 
-  def run_queries #Master method
+  def run_queries 
     query_workspaces
     query_projects
     query_tasks
     collect_tasks_for_export
-    p formatted_tasks
     task_processor.process_tasks(self)
   end
 
-  def get_query_results(query) 
+  def get_query_results(query) #Returning the query results requires establishing a connection to the Asana API. This is done through the following methods. 
     response = query_asana(query)
     data_output = send_to_json(response)
   end
 
   def query_asana(query)
-    uri = connect_to_asana(query)
+    uri = connect_to_asana(query) 
     http = new_http(uri)
-    response = process_post(uri, http)
+    response = process_get(uri, http)
   end
 
   def connect_to_asana(destination)
@@ -81,7 +84,7 @@ class Asana
     http
   end
 
-  def process_post(uri, http)
+  def process_get(uri, http)
     request = Net::HTTP::Get.new(uri)
     request.basic_auth($asana_personal_token, '')
     response = http.request(request)
