@@ -31,26 +31,35 @@ class Asana
 
   def query_projects
     workspace_ids.each do |workspace| 
-      output = get_query_results("workspaces/#{workspace}/projects") #Query returns projects associated with workspace.
+      output = get_query_results("workspaces/#{workspace}/projects") #Query returns projects associated with workspaces. Exit if no projects.
       output.each do |project|
         project_ids << project["id"]
       end
     end
+    exit_if_no_tasks(project_ids)
   end
 
   def query_tasks
-    project_ids.each do |project| #Query returns tasks associated with projects.
+    project_ids.each do |project| #Query returns tasks associated with projects. Exit if no tasks.
       output = get_query_results("projects/#{project}/tasks")
       output.each do |task|
          tasks << task["id"]
       end
     end
+    exit_if_no_tasks(tasks)
   end
 
   def collect_tasks_for_export
     tasks.each do |task_id|
       task_data = get_query_results("tasks/#{task_id}") 
       formatted_tasks << task_data
+    end
+  end
+
+  def exit_if_no_tasks(source)
+    if source.empty?
+      puts "No Tasks to Migrate. Application will now close." 
+      exit(1)
     end
   end
 

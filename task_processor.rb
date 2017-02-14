@@ -1,7 +1,7 @@
 require './github.rb'
 
 class TaskProcessor
-	attr_reader :github
+  attr_reader :github
   
   def initialize(args)
     @github = args[:github]
