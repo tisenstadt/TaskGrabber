@@ -36,6 +36,7 @@ TaskGrabber makes use of a light token-based authentication system to connect to
 2. Click the link to Settings.
 3. At the bottom of the navigation bar on the left-hand side of the screen, click the link to Personal access tokens.
 4. Click Generate new token.
+5. When prompted for Scopes, select repo and user to enable control of private repositories.
 
 ###Design Strategies:
 
